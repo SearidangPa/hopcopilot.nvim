@@ -1,9 +1,7 @@
 local M = {}
 
 --- === set up options ===
-
 ---@class copilot_hop.Options
-
 ---@type copilot_hop.Options
 local options = {
 	triggerKey = "<D-s>",
