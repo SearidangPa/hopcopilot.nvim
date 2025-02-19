@@ -1,8 +1,18 @@
 local M = {}
 local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
 
---- === set up options ===
 ---@class copilot_hop.Options
+---@class matchInfo
+---@field col number
+---@field label string
+---@field abs number
+
+---@class matchesByRow
+---@field number table<number, matchInfo>
+
+---@class labels table<string, number>
+
+--- === set up options ===
 ---@type copilot_hop.Options
 local options = {
 	triggerKey = "<D-s>",
@@ -17,16 +27,6 @@ M.setup = function(opts)
 end
 
 -- === Jumping to a match ===
-
----@class matchInfo
----@field col number
----@field label string
----@field abs number
-
----@class matchesByRow
----@field number table<number, matchInfo>
-
----@class labels table<string, number>
 
 ---@param labels labels
 ---@param ns number
