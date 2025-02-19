@@ -184,10 +184,8 @@ local function copilot_hop()
 	local char = vim.fn.nr2char(vim.fn.getchar())
 	local suggestion = vim.fn["copilot#GetDisplayedSuggestion"]()
 	local text = suggestion.text
-	local copilot_clear = vim.fn["copilot#Clear"]
 	assert(suggestion, "copilot#GetDisplayedSuggestion not found")
 	assert(text, "suggestion text not found")
-	assert(copilot_clear, "copilot#Clear not found")
 
 	local matches = parse_suggestion(text, char)
 	if #matches == 0 then
@@ -199,7 +197,7 @@ local function copilot_hop()
 	else
 		local labels, matches_by_row = transform_abs_match(text, matches)
 		local virt_lines = build_virtual_lines(text, matches_by_row)
-		copilot_clear()
+
 		vim.cmd([[Copilot disable]]) -- Disable copilot to prevent it from popping up again
 		display_virtual_lines(ns, virt_lines)
 		jump_from_user_choice(labels, ns, text)
