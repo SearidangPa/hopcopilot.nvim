@@ -93,6 +93,20 @@ end
 ---@param matches table<number>
 ---@return labels, matchesByRow
 local function transform_abs_match(text, matches)
+	-- Helper function: convert an integer to a label using a base-52 system with a-z and A-Z.
+	local function int_to_label(n)
+		local allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" -- 52 characters
+		local base = #allowed
+		local label = ""
+		while n > 0 do
+			n = n - 1
+			local remainder = n % base
+			label = allowed:sub(remainder + 1, remainder + 1) .. label
+			n = math.floor(n / base)
+		end
+		return label
+	end
+
 	local labels = {}
 	local matches_by_row = {}
 	for i, abs_index in ipairs(matches) do
@@ -100,7 +114,7 @@ local function transform_abs_match(text, matches)
 		if not matches_by_row[row] then
 			matches_by_row[row] = {}
 		end
-		local label = string.char(string.byte("a") + i - 1) -- Create a label for this match (e.g., 'a', 'b', etc.).
+		local label = int_to_label(i) -- Generate label using only a-z and A-Z.
 		table.insert(matches_by_row[row], { col = col, label = label, abs = abs_index })
 		labels[label] = abs_index
 	end
