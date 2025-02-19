@@ -96,7 +96,7 @@ end
 local function transform_abs_match(text, matches)
 	local function int_to_label(n)
 		local allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		if n <= #allowed then
+		if n > #allowed then
 			return "|"
 		end
 		return allowed:sub(n, n)
