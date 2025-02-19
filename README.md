@@ -10,7 +10,8 @@ I take inspiration from folke's flash.nvim.
 * I input the label key to accept copilot suggestion up until then.  
 
 ## Demo
-![Alt text](https://github.com/user-attachments/assets/41f07a2c-090b-4d0b-9175-4a0058f985fe)
+https://github.com/user-attachments/assets/41f07a2c-090b-4d0b-9175-4a0058f985fe
+
 
 ## How i set it up
 ```lua
