@@ -10,9 +10,12 @@ Hop to the place you want in copilot suggestion. Inspired by folke's flash.nvim.
 
 
 ## Demo
-https://github.com/user-attachments/assets/41f07a2c-090b-4d0b-9175-4a0058f985fe
+"https://github.com/user-attachments/assets/41f07a2c-090b-4d0b-9175-4a0058f985fe"
 
 Note that it should also handle multiline suggestions. Seems to work for most cases so far, but i see some weird stuff, sometimes. 
+https://github.com/user-attachments/assets/7697bc8c-00cd-48ce-b281-8f549fd562c7
+
+
 
 ## How i set it up
 ```lua
