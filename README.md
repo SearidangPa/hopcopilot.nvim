@@ -4,7 +4,7 @@ Hop to the place you want in copilot suggestion. Inspired by folke's flash.nvim.
 ## Flow
 * I see a copilot suggestion
 * I only want to accept up until a certain point
-* I press a trigger-key (for me, i set it to "<D-s>"), and a char that i want to hop to
+* I press a trigger-key (for me, i set it to <D-s>), and a char that i want to hop to
 * This plugin label all the places that has the char
 * I input the label key to accept copilot suggestion up until then.
 
