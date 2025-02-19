@@ -120,9 +120,10 @@ end
 
 ---@param text string
 ---@param matches_by_row matchesByRow
----@return table<table<string, string>>
+---@return table<string, string>, table<table<string, string>>
 local function build_virtual_lines(text, matches_by_row)
 	local lines = vim.split(text, "\n", { plain = true })
+	local first_virtual_line = {}
 	local virt_lines = {}
 
 	for row, line_text in ipairs(lines) do
@@ -144,32 +145,31 @@ local function build_virtual_lines(text, matches_by_row)
 			table.insert(virt_line, { line_text:sub(prev + 1), "CopilotSuggestion" })
 		end
 
-		table.insert(virt_lines, virt_line)
+		if row == 1 then
+			first_virtual_line = virt_line
+		else
+			table.insert(virt_lines, virt_line)
+		end
 	end
 
-	return virt_lines
+	return first_virtual_line, virt_lines
 end
 
-local function display_virtual_lines(ns, virt_lines)
+local function display_virtual_lines(ns, first_virtual_line, virt_lines)
 	vim.api.nvim_buf_clear_namespace(0, copilot_ns, 0, -1)
 
 	vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 	local start_line = vim.fn.line(".") - 1 -- current line (0-indexed)
 	local start_col = vim.fn.col(".") - 1
 
-	local inline_text = virt_lines[1] or {}
 	vim.api.nvim_buf_set_extmark(0, ns, start_line, start_col, {
-		virt_text = inline_text,
+		virt_text = first_virtual_line,
 		virt_text_pos = "inline", -- places text right after the cursor
 	})
 
-	if #virt_lines > 1 then
-		local additional_lines = {}
-		for i = 2, #virt_lines do
-			table.insert(additional_lines, virt_lines[i])
-		end
+	if #virt_lines > 0 then
 		vim.api.nvim_buf_set_extmark(0, ns, start_line, start_col, {
-			virt_lines = additional_lines,
+			virt_lines = virt_lines,
 		})
 	end
 
@@ -193,10 +193,10 @@ local function copilot_hop()
 		vim.api.nvim_feedkeys(partial, "n", false)
 	else
 		local labels, matches_by_row = transform_abs_match(text, matches)
-		local virt_lines = build_virtual_lines(text, matches_by_row)
+		local first_virt_line, virt_lines = build_virtual_lines(text, matches_by_row)
 
 		vim.cmd([[Copilot disable]]) -- Disable copilot to prevent it from popping up again
-		display_virtual_lines(ns, virt_lines)
+		display_virtual_lines(ns, first_virt_line, virt_lines)
 		jump_from_user_choice(labels, ns, text)
 		vim.cmd([[Copilot enable]])
 	end
