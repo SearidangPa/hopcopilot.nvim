@@ -178,7 +178,6 @@ local function copilot_hop()
 
 	local matches = parse_suggestion(text, char)
 	if #matches == 0 then
-		-- No jump targets found; handle as needed.
 		vim.api.nvim_out_write("No jump targets found\n")
 		return
 	elseif #matches == 1 then
