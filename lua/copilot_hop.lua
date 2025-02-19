@@ -1,4 +1,5 @@
 local M = {}
+local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
 
 --- === set up options ===
 ---@class copilot_hop.Options
@@ -95,16 +96,11 @@ end
 local function transform_abs_match(text, matches)
 	-- Helper function: convert an integer to a label using a base-52 system with a-z and A-Z.
 	local function int_to_label(n)
-		local allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" -- 52 characters
-		local base = #allowed
-		local label = ""
-		while n > 0 do
-			n = n - 1
-			local remainder = n % base
-			label = allowed:sub(remainder + 1, remainder + 1) .. label
-			n = math.floor(n / base)
+		local allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		if n <= #allowed then
+			return "|"
 		end
-		return label
+		return allowed:sub(n, n)
 	end
 
 	local labels = {}
@@ -156,7 +152,6 @@ local function build_virtual_lines(text, matches_by_row)
 end
 
 local function display_virtual_lines(ns, virt_lines)
-	local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
 	vim.api.nvim_buf_clear_namespace(0, copilot_ns, 0, -1)
 
 	vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
