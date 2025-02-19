@@ -35,7 +35,7 @@ return {
 ```lua
 local options = {
 	triggerKey = "<D-s>",
-	highlightGroup = "CopilotHopLabel",
+	labelHighlightGroup = "CopilotHopLabel",
 }
 ```
 
