@@ -6,12 +6,13 @@ Hop to the place you want in copilot suggestion. Inspired by folke's flash.nvim.
 * I only want to accept up until a certain point
 * I press a trigger-key (for me, i set it to "<D-s>"), and a char that i want to hop to
 * This plugin label all the places that has the char
-* I input the label key to accept copilot suggestion up until then.  
+* I input the label key to accept copilot suggestion up until then.
 
 
 ## Demo
 https://github.com/user-attachments/assets/41f07a2c-090b-4d0b-9175-4a0058f985fe
 
+## Note that it can also handle multiline suggestions
 
 ## How i set it up
 ```lua
