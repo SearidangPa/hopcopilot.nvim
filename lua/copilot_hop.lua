@@ -163,7 +163,6 @@ local function display_virtual_lines(ns, virt_lines)
 	end
 
 	vim.cmd("redraw")
-	vim.cmd([[Copilot disable]])
 end
 
 local function copilot_hop()
@@ -182,11 +181,12 @@ local function copilot_hop()
 		local partial = string.sub(text, 1, matches[1])
 		vim.api.nvim_feedkeys(partial, "n", false)
 	else
+		vim.cmd([[Copilot disable]]) -- Disable copilot to prevent it from popping up again
 		local labels, matches_by_row = transform_abs_match(text, matches)
 		local virt_lines = build_virtual_lines(text, matches_by_row)
 		display_virtual_lines(ns, virt_lines)
 		jump_from_user_choice(labels, ns, text)
-		vim.cmd([[Copilot enable]])
+		vim.cmd([[Copilot enable]]) -- Re-enable copilot
 	end
 end
 
