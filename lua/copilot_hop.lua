@@ -7,12 +7,14 @@ local M = {}
 ---@type copilot_hop.Options
 local options = {
 	triggerKey = "<D-s>",
+	labelHighlightGroup = "CopilotHopLabel",
 }
 
 --- Setup the plugin
 ---@param opts copilot_hop.Options
 M.setup = function(opts)
 	options = vim.tbl_deep_extend("force", options, opts or {})
+	vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4" })
 end
 
 -- === Jumping to a match ===
@@ -128,7 +130,7 @@ local function build_virtual_lines(text, matches_by_row)
 			if m.col > prev then
 				table.insert(virt_line, { line_text:sub(prev + 1, m.col), "CopilotSuggestion" })
 			end
-			table.insert(virt_line, { m.label, "CopilotHopLabel" })
+			table.insert(virt_line, { m.label, options.labelHighlightGroup })
 			prev = m.col + 1
 		end
 		if prev < #line_text then
@@ -142,7 +144,7 @@ local function build_virtual_lines(text, matches_by_row)
 end
 
 local function display_virtual_lines(ns, virt_lines)
-	vim.api.nvim_buf_clear_namespace(0, -1, 0, -1)
+	vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 	local start_line = vim.fn.line(".") - 1 -- current line (0-indexed)
 	local start_col = vim.fn.col(".") - 1
 
@@ -170,12 +172,15 @@ local function copilot_hop()
 	local ns = vim.api.nvim_create_namespace("copilot_jump")
 	local char = vim.fn.nr2char(vim.fn.getchar())
 	local suggestion = vim.fn["copilot#GetDisplayedSuggestion"]()
-	local text = suggestion.text
 	assert(suggestion, "copilot#GetDisplayedSuggestion not found")
+	local text = suggestion.text
 	assert(text, "suggestion text not found")
 
 	local matches = parse_suggestion(text, char)
 	if #matches == 0 then
+		-- No jump targets found; handle as needed.
+		vim.api.nvim_out_write("No jump targets found\n")
+		return
 	elseif #matches == 1 then
 		local partial = string.sub(text, 1, matches[1])
 		vim.api.nvim_feedkeys(partial, "n", false)
@@ -188,7 +193,6 @@ local function copilot_hop()
 	end
 end
 
-vim.api.nvim_set_hl(0, "CopilotHopLabel", { fg = "#5097A4" })
 vim.keymap.set("i", options.triggerKey, copilot_hop, { silent = true, desc = "Accept Copilot and jump to a label" })
 
 return M
