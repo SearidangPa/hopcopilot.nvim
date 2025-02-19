@@ -1,5 +1,5 @@
 # copilot_hop.nvim
-Hop to the place you want in copilot suggestion
+Hop to the place you want in copilot suggestion. Inspired by folke's flash.nvim.
 
 ## Flow
 * I see a copilot suggestion
@@ -7,7 +7,7 @@ Hop to the place you want in copilot suggestion
 * I press a trigger-key (for me, i set it to "<D-s>"), and a char that i want to hop to
 * This plugin label all the places that has the char
 * I input the label key to accept copilot suggestion up until then.  
-I take inspiration from folke's flash.nvim.
+
 
 ## Demo
 https://github.com/user-attachments/assets/41f07a2c-090b-4d0b-9175-4a0058f985fe
