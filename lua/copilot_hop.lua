@@ -1,6 +1,6 @@
 local M = {}
 
---- === options ===
+--- === set up options ===
 
 ---@class copilot_hop.Options
 
