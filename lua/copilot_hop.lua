@@ -156,6 +156,9 @@ local function build_virtual_lines(text, matches_by_row)
 end
 
 local function display_virtual_lines(ns, virt_lines)
+	local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
+	vim.api.nvim_buf_clear_namespace(0, copilot_ns, 0, -1)
+
 	vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 	local start_line = vim.fn.line(".") - 1 -- current line (0-indexed)
 	local start_col = vim.fn.col(".") - 1
