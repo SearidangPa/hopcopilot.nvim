@@ -94,7 +94,6 @@ end
 ---@param matches table<number>
 ---@return labels, matchesByRow
 local function transform_abs_match(text, matches)
-	-- Helper function: convert an integer to a label using a base-52 system with a-z and A-Z.
 	local function int_to_label(n)
 		local allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		if n <= #allowed then
