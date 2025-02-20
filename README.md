@@ -33,7 +33,7 @@ return {
 ## Default Options
 ```lua
 local options = {
-	triggerKey = "<D-s>",
+	triggerKey = "<M-s>",
 	labelHighlightGroup = "CopilotHopLabel",
 }
 ```

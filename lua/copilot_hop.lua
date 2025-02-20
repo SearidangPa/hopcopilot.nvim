@@ -15,7 +15,7 @@ local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
 --- === set up options ===
 ---@type copilot_hop.Options
 local options = {
-	triggerKey = "<D-s>",
+	triggerKey = "<M-s>",
 	labelHighlightGroup = "CopilotHopLabel",
 }
 
