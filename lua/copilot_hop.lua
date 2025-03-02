@@ -8,14 +8,11 @@ local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
 ---@field abs number
 
 ---@class matchesByRow
----@field number table<number, matchInfo>
-
----@class labels table<string, number>
+---@field number table<number, matchInfo> @class labels table<string, number>
 
 --- === set up options ===
 ---@type copilot_hop.Options
 local options = {
-	triggerKey = "<M-s>",
 	labelHighlightGroup = "CopilotHopLabel",
 }
 
@@ -28,7 +25,7 @@ end
 
 -- === Jumping to a match ===
 
----@param labels labels
+---@param labels table<string, number>
 ---@param ns number
 ---@param text string
 local function jump_from_user_choice(labels, ns, text)
@@ -92,7 +89,7 @@ end
 
 ---@param text string
 ---@param matches table<number>
----@return labels, matchesByRow
+---@return table<string, number>, matchesByRow
 local function transform_abs_match(text, matches)
 	local function int_to_label(n)
 		local allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -176,7 +173,7 @@ local function display_virtual_lines(ns, first_virtual_line, virt_lines)
 	vim.cmd("redraw")
 end
 
-local function copilot_hop()
+M.copilot_hop = function()
 	local ns = vim.api.nvim_create_namespace("copilot_jump")
 	local char = vim.fn.nr2char(vim.fn.getchar())
 	local suggestion = vim.fn["copilot#GetDisplayedSuggestion"]()
@@ -201,7 +198,5 @@ local function copilot_hop()
 		vim.cmd([[Copilot enable]])
 	end
 end
-
-vim.keymap.set("i", options.triggerKey, copilot_hop, { silent = true, desc = "Accept Copilot and jump to a label" })
 
 return M
