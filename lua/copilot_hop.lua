@@ -16,8 +16,6 @@ local options = {
 	labelHighlightGroup = "CopilotHopLabel",
 }
 
---- Setup the plugin
----@param opts copilot_hop.Options
 M.setup = function(opts)
 	options = vim.tbl_deep_extend("force", options, opts or {})
 	vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4" })
@@ -25,9 +23,6 @@ end
 
 -- === Jumping to a match ===
 
----@param labels table<string, number>
----@param ns number
----@param text string
 local function jump_from_user_choice(labels, ns, text)
 	local function split_into_lines(str)
 		local lines = {}
@@ -87,9 +82,6 @@ local function index_to_row_col(text, index)
 	return row, col
 end
 
----@param text string
----@param matches table<number>
----@return table<string, number>, matchesByRow
 local function transform_abs_match(text, matches)
 	local function int_to_label(n)
 		local allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
