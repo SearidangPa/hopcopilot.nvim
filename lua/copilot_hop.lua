@@ -7,7 +7,7 @@ local options = {
 
 M.setup = function(opts)
 	options = vim.tbl_deep_extend("force", options, opts or {})
-	vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4", bold = true, priority = 200 })
+	vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4", bold = true })
 end
 
 -- === Jumping to a match ===
