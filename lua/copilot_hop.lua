@@ -1,28 +1,16 @@
 local M = {}
 local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
 
----@class copilot_hop.Options
----@class matchInfo
----@field col number
----@field label string
----@field abs number
-
----@class matchesByRow
----@field number table<number, matchInfo> @class labels table<string, number>
-
---- === set up options ===
----@type copilot_hop.Options
 local options = {
 	labelHighlightGroup = "CopilotHopLabel",
 }
 
 M.setup = function(opts)
 	options = vim.tbl_deep_extend("force", options, opts or {})
-	vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4" })
+	vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4", bold = true, priority = 200 })
 end
 
 -- === Jumping to a match ===
-
 local function jump_from_user_choice(labels, ns, text)
 	local function split_into_lines(str)
 		local lines = {}
@@ -46,10 +34,6 @@ local function jump_from_user_choice(labels, ns, text)
 end
 
 -- === processing the suggestion text to find the matches ===
-
----@param text string
----@param char string
----@return table<number>
 local parse_suggestion = function(text, char)
 	local matches = {}
 	local lower_text = string.lower(text)
@@ -66,9 +50,6 @@ local parse_suggestion = function(text, char)
 	return matches
 end
 
----@param text string
----@param index number
----@return number, number
 local function index_to_row_col(text, index)
 	local row = 0
 	local last_newline = 0
@@ -107,9 +88,6 @@ end
 
 ---=== Building virtual lines for the jump ===
 
----@param text string
----@param matches_by_row matchesByRow
----@return table<string, string>, table<table<string, string>>
 local function build_virtual_lines(text, matches_by_row)
 	local lines = vim.split(text, "\n", { plain = true })
 	local first_virtual_line = {}
