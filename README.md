@@ -17,6 +17,7 @@ It should also handle multiline suggestions. [demo](https://github.com/user-atta
 
 
 ## How i set it up
+
 ```lua
 return {
   'SearidangPa/copilot_hop.nvim',
@@ -25,24 +26,13 @@ return {
   },
   config = function()
     local copilot_hop = require 'copilot_hop'
-    local triggerkey
-    if vim.fn.has 'win32' == 1 then
-      triggerkey = '<M-S>'
-    else
-      triggerkey = '<D-s>'
-    end
-    vim.keymap.set('i', triggerkey, copilot_hop.copilot_hop, { silent = true, desc = 'copilot_hop' })
+    copilot_hop.setup()
+    vim.keymap.set('i', '<M-s>', copilot_hop.copilot_hop, { silent = true, desc = 'copilot_hop' })
+    vim.keymap.set('i', '<D-s>', copilot_hop.copilot_hop, { silent = true, desc = 'copilot_hop' })
   end,
 }
 ```
 
-## Default Options
-```lua
-local options = {
-	triggerKey = "<M-s>",
-	labelHighlightGroup = "CopilotHopLabel",
-}
-```
 
 ## Dependencies
-* `github/copilot.vim`. Too lazy to switch to the copilot.lua.
+* `github/copilot.vim`. 
