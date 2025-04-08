@@ -5,11 +5,6 @@ local options = {
 	labelHighlightGroup = "CopilotHopLabel",
 }
 
-M.setup = function(opts)
-	options = vim.tbl_deep_extend("force", options, opts or {})
-	vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4", bold = true })
-end
-
 -- === Jumping to a match ===
 local function jump_from_user_choice(labels, ns, text)
 	local function split_into_lines(str)
