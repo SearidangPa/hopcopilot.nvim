@@ -20,15 +20,15 @@ It should also handle multiline suggestions. [demo](https://github.com/user-atta
 
 ```lua
 return {
-  'SearidangPa/copilot_hop.nvim',
+  'SearidangPa/hopcopilot.nvim',
   dependencies = {
     'github/copilot.vim',
   },
   config = function()
-    local copilot_hop = require 'copilot_hop'
-    copilot_hop.setup()
-    vim.keymap.set('i', '<M-s>', copilot_hop.copilot_hop, { silent = true, desc = 'copilot_hop' })
-    vim.keymap.set('i', '<D-s>', copilot_hop.copilot_hop, { silent = true, desc = 'copilot_hop' })
+    local hopcopilot = require 'hopcopilot'
+    hopcopilot.setup()
+    vim.keymap.set('i', '<M-s>', hopcopilot.hop_copilot, { silent = true, desc = 'hop copilot' })
+    vim.keymap.set('i', '<D-s>', hopcopilot.hop_copilot, { silent = true, desc = 'hop copilot' })
   end,
 }
 ```
