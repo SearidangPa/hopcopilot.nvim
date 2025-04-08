@@ -153,7 +153,7 @@ M.copilot_hop = function()
 
 	local matches = parse_suggestion(text, char)
 	if #matches == 0 then
-		vim.api.nvim_out_write("No jump targets found\n")
+		vim.notify("No jump targets found")
 		return
 	elseif #matches == 1 then
 		local partial = string.sub(text, 1, matches[1])
