@@ -4,6 +4,7 @@ local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
 local options = {
 	labelHighlightGroup = "CopilotHopLabel",
 }
+vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4", bold = true })
 
 -- === Jumping to a match ===
 local function jump_from_user_choice(labels, ns, text)
