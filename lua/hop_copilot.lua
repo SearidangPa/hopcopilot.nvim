@@ -139,7 +139,7 @@ local function display_virtual_lines(ns, first_virtual_line, virt_lines)
 	vim.cmd("redraw")
 end
 
-M.copilot_hop = function()
+M.hop_copilot = function()
 	local ns = vim.api.nvim_create_namespace("copilot_jump")
 	local char = vim.fn.nr2char(vim.fn.getchar())
 	local suggestion = vim.fn["copilot#GetDisplayedSuggestion"]()

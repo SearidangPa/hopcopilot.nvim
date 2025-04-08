@@ -1,4 +1,4 @@
-# copilot_hop.nvim
+# hop_copilot.nvim
 Hop to the place you want in copilot suggestion. Inspired by folke's flash.nvim.
 
 ## Flow
