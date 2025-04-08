@@ -1,7 +1,7 @@
 # hopcopilot.nvim
 Hop to the place you want in copilot suggestion. Inspired by folke's flash.nvim.
 
-## Flow
+## This is the flow
 * I see a copilot suggestion
 * I only want to accept up until a certain point
 * I press a trigger-key and a char that i want to hop to
