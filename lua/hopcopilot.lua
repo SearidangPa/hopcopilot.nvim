@@ -20,7 +20,9 @@ local function jump_from_user_choice(labels, ns, text)
 	end
 	local function put_lines_as_is(str)
 		local lines = split_into_lines(str)
-		vim.api.nvim_put(lines, "c", false, true)
+		vim.schedule(function()
+			vim.api.nvim_put(lines, "c", false, true)
+		end)
 	end
 
 	local choice = vim.fn.nr2char(vim.fn.getchar())
