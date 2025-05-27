@@ -5,6 +5,15 @@ local options = {
 	labelHighlightGroup = "CopilotHopLabel",
 }
 
+local function get_char_input()
+	local char_code = vim.fn.getchar()
+	if type(char_code) == "string" then
+		return char_code
+	else
+		return vim.fn.nr2char(char_code)
+	end
+end
+
 M.setup = function()
 	vim.api.nvim_set_hl(0, options.labelHighlightGroup, {
 		fg = "#5097A4",
@@ -28,7 +37,7 @@ local function jump_from_user_choice(labels, ns, text)
 		end)
 	end
 
-	local choice = vim.fn.nr2char(vim.fn.getchar())
+	local choice = get_char_input()
 	local pos = labels[choice]
 	if pos then
 		local partial = string.sub(text, 1, pos)
@@ -148,7 +157,7 @@ M.hop_copilot = function()
 	M.setup()
 
 	local ns = vim.api.nvim_create_namespace("copilot_jump")
-	local char = vim.fn.nr2char(vim.fn.getchar())
+	local char = get_char_input()
 	local suggestion = vim.fn["copilot#GetDisplayedSuggestion"]()
 	local text = suggestion.text
 	assert(suggestion, "copilot#GetDisplayedSuggestion not found")
