@@ -2,18 +2,21 @@ local M = {}
 local copilot_ns = vim.api.nvim_create_namespace("github-copilot")
 
 local options = {
-	labelHighlightGroup = "HopLabel",
+	labelHighlightGroup = "CopilotHopLabel",
 }
 
 M.setup = function()
-	vim.api.nvim_set_hl(0, options.labelHighlightGroup, { fg = "#5097A4", bold = true })
+	vim.api.nvim_set_hl(0, options.labelHighlightGroup, {
+		fg = "#5097A4",
+		bold = true,
+		force = true,
+	})
 end
 
--- === Jumping to a match ===
 local function jump_from_user_choice(labels, ns, text)
 	local function split_into_lines(str)
 		local lines = {}
-		for line in (str .. "\n"):gmatch("(.-)\n") do -- This pattern captures each line including empty lines
+		for line in (str .. "\n"):gmatch("(.-)\n") do
 			table.insert(lines, line)
 		end
 		return lines
@@ -34,7 +37,6 @@ local function jump_from_user_choice(labels, ns, text)
 	vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 end
 
--- === processing the suggestion text to find the matches ===
 local parse_suggestion = function(text, char)
 	local matches = {}
 	local lower_text = string.lower(text)
@@ -60,7 +62,7 @@ local function index_to_row_col(text, index)
 			last_newline = i
 		end
 	end
-	local col = index - last_newline - 1 -- zero-indexed column
+	local col = index - last_newline - 1
 	return row, col
 end
 
@@ -80,14 +82,12 @@ local function transform_abs_match(text, matches)
 		if not matches_by_row[row] then
 			matches_by_row[row] = {}
 		end
-		local label = int_to_label(i) -- Generate label using only a-z and A-Z.
+		local label = int_to_label(i)
 		table.insert(matches_by_row[row], { col = col, label = label, abs = abs_index })
 		labels[label] = abs_index
 	end
 	return labels, matches_by_row
 end
-
----=== Building virtual lines for the jump ===
 
 local function build_virtual_lines(text, matches_by_row)
 	local lines = vim.split(text, "\n", { plain = true })
@@ -96,7 +96,7 @@ local function build_virtual_lines(text, matches_by_row)
 
 	for row, line_text in ipairs(lines) do
 		local virt_line = {}
-		local line_matches = matches_by_row[row - 1] or {} -- Adjust row to 0-indexed for our stored matches.
+		local line_matches = matches_by_row[row - 1] or {}
 		table.sort(line_matches, function(a, b)
 			return a.col < b.col
 		end)
@@ -127,12 +127,12 @@ local function display_virtual_lines(ns, first_virtual_line, virt_lines)
 	vim.api.nvim_buf_clear_namespace(0, copilot_ns, 0, -1)
 
 	vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
-	local start_line = vim.fn.line(".") - 1 -- current line (0-indexed)
+	local start_line = vim.fn.line(".") - 1
 	local start_col = vim.fn.col(".") - 1
 
 	vim.api.nvim_buf_set_extmark(0, ns, start_line, start_col, {
 		virt_text = first_virtual_line,
-		virt_text_pos = "inline", -- places text right after the cursor
+		virt_text_pos = "inline",
 	})
 
 	if #virt_lines > 0 then
@@ -145,6 +145,8 @@ local function display_virtual_lines(ns, first_virtual_line, virt_lines)
 end
 
 M.hop_copilot = function()
+	M.setup()
+
 	local ns = vim.api.nvim_create_namespace("copilot_jump")
 	local char = vim.fn.nr2char(vim.fn.getchar())
 	local suggestion = vim.fn["copilot#GetDisplayedSuggestion"]()
@@ -163,7 +165,7 @@ M.hop_copilot = function()
 		local labels, matches_by_row = transform_abs_match(text, matches)
 		local first_virt_line, virt_lines = build_virtual_lines(text, matches_by_row)
 
-		vim.cmd([[Copilot disable]]) -- Disable copilot to prevent it from popping up again
+		vim.cmd([[Copilot disable]])
 		display_virtual_lines(ns, first_virt_line, virt_lines)
 		jump_from_user_choice(labels, ns, text)
 		vim.cmd([[Copilot enable]])
